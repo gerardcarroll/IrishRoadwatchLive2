@@ -1,7 +1,10 @@
 package gcarroll.com.irishroadwatchlive.requests;
 
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Type;
 import java.util.Map;
+
+import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
@@ -17,27 +20,29 @@ import com.google.gson.JsonSyntaxException;
  */
 public class GsonRequest<T> extends Request<T> {
 
-  private final Gson gson = new Gson();
+  private final String LOG_TAG = GsonRequest.class.getSimpleName();
 
-  private final Class<T> clazz;
+  private final Gson gson = new Gson();
 
   private final Map<String, String> headers;
 
   private final Response.Listener<T> listener;
 
+  private final Type type;
+
   /**
    * Make a GET request and return a parsed object from JSON.
    *
    * @param url URL of the request to make
-   * @param clazz Relevant class object, for Gson's reflection
+   * @param type Relevant Type of the object, for Gson's reflection
    * @param headers Map of request headers
    */
-  public GsonRequest(final String url, final Class<T> clazz, final Map<String, String> headers,
+  public GsonRequest(final String url, Type type, final Map<String, String> headers,
       final Response.Listener<T> listener, final Response.ErrorListener errorListener) {
     super(Method.GET, url, errorListener);
-    this.clazz = clazz;
     this.headers = headers;
     this.listener = listener;
+    this.type = type;
   }
 
   @Override
@@ -56,12 +61,14 @@ public class GsonRequest<T> extends Request<T> {
   protected Response<T> parseNetworkResponse(final NetworkResponse response) {
     try {
       final String json = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
-      return Response.success(gson.fromJson(json, clazz), HttpHeaderParser.parseCacheHeaders(response));
+      T parseObject = gson.fromJson(json, type);
+      return Response.success(parseObject, HttpHeaderParser.parseCacheHeaders(response));
     }
     catch (final UnsupportedEncodingException e) {
       return Response.error(new ParseError(e));
     }
     catch (final JsonSyntaxException e) {
+      Log.v(LOG_TAG, e.toString());
       return Response.error(new ParseError(e));
     }
   }
