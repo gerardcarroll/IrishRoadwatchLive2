@@ -37,7 +37,7 @@ public class GsonRequest<T> extends Request<T> {
    * @param type Relevant Type of the object, for Gson's reflection
    * @param headers Map of request headers
    */
-  public GsonRequest(final String url, Type type, final Map<String, String> headers,
+  public GsonRequest(final String url, final Type type, final Map<String, String> headers,
       final Response.Listener<T> listener, final Response.ErrorListener errorListener) {
     super(Method.GET, url, errorListener);
     this.headers = headers;
@@ -61,14 +61,15 @@ public class GsonRequest<T> extends Request<T> {
   protected Response<T> parseNetworkResponse(final NetworkResponse response) {
     try {
       final String json = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
-      T parseObject = gson.fromJson(json, type);
+      final T parseObject = gson.fromJson(json, type);
+      Log.v(LOG_TAG, "Returning Response success");
       return Response.success(parseObject, HttpHeaderParser.parseCacheHeaders(response));
     }
     catch (final UnsupportedEncodingException e) {
       return Response.error(new ParseError(e));
     }
     catch (final JsonSyntaxException e) {
-      Log.v(LOG_TAG, e.toString());
+      Log.v(LOG_TAG, "Returning Response error: " + e.toString());
       return Response.error(new ParseError(e));
     }
   }

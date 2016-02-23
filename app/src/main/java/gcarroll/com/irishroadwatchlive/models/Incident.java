@@ -1,5 +1,8 @@
 package gcarroll.com.irishroadwatchlive.models;
 
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.gson.annotations.Expose;
@@ -49,7 +52,26 @@ public class Incident {
   @Expose
   private Integer ZoomLevel;
 
+  private String Date;
+
   private BitmapDescriptor MapIcon;
+
+  public String getDate() {
+    return Date;
+  }
+
+  public void setDate(final String updatedAt) {
+    final SimpleDateFormat incomingFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
+    final SimpleDateFormat outputFormat = new SimpleDateFormat("E, MMM dd yyyy '@' HH:mm:ss", Locale.getDefault());
+    final java.util.Date date;
+    try {
+      date = incomingFormat.parse(updatedAt);
+      this.Date = String.format("Updated: %s", outputFormat.format(date));
+    }
+    catch (final Exception e) {
+      this.Date = String.format("Updated: %s", updatedAt);
+    }
+  }
 
   public BitmapDescriptor getMapIcon() {
     return MapIcon;
