@@ -10,6 +10,9 @@
             <item
                 android:id="@+id/national_sum"
                 android:title="@string/drawer_menu_nat_sum"/>
+            <item
+                android:id="@+id/dublin_cam"
+                android:title="@string/drawer_menu_dub_cam"/>
         </menu>
     </item>
 

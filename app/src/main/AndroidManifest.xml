@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    package="gcarroll.com.irishroadwatchlive"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest package="gcarroll.com.irishroadwatchlive"
+          xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -35,13 +34,16 @@
             </intent-filter>
         </activity>
 
-        <!-- Google Maps Fragment API Key Data "AIzaSyDfFApi_JGyojVCE12SdWNOCkNHjtFhoIU"-->
+        <!-- Google Maps Fragment API Key Data "AIzaSyDfFApi_JGyojVCE12SdWNOCkNHjtFhoIU" -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCb-qgpyDYoMk6VppNVntpekN5icUv7M_c"/>
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version"/>
+
+        <activity android:name=".DublinCamActivity">
+        </activity>
     </application>
 
 </manifest>
