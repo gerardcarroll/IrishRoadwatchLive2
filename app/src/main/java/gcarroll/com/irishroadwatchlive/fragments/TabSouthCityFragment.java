@@ -12,12 +12,11 @@ import gcarroll.com.irishroadwatchlive.R;
  * Created by gcarroll on 24-02-2016.
  */
 
-public class MotorwayFragment extends Fragment {
+public class TabSouthCityFragment extends Fragment {
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     // Inflate the layout for this fragment
-    return inflater.inflate(R.layout.camera_motorway_tab, container, false);
+    return inflater.inflate(R.layout.pager_south_camera, container, false);
   }
-
 }

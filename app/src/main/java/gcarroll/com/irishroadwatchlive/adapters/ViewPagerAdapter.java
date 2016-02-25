@@ -4,9 +4,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import gcarroll.com.irishroadwatchlive.fragments.MotorwayFragment;
-import gcarroll.com.irishroadwatchlive.fragments.NorthCityFragment;
-import gcarroll.com.irishroadwatchlive.fragments.SouthCityFragment;
+import gcarroll.com.irishroadwatchlive.fragments.TabMotorwayFragment;
+import gcarroll.com.irishroadwatchlive.fragments.TabNorthCityFragment;
+import gcarroll.com.irishroadwatchlive.fragments.TabSouthCityFragment;
 
 /**
  * Created by gcarroll on 24/02/2016. Need a ViewPager adapter to provide the views for every page i.e every Tab.
@@ -34,11 +34,11 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
     switch (position) {
       case 0:
-        return new MotorwayFragment();
+        return new TabMotorwayFragment();
       case 1:
-        return new NorthCityFragment();
+        return new TabNorthCityFragment();
       default:
-        return new SouthCityFragment();
+        return new TabSouthCityFragment();
     }
   }
 
