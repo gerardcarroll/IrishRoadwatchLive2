@@ -98,7 +98,7 @@ public class MyMapFragment extends Fragment implements OnMapReadyCallback {
 
     final RequestQueue queue = Volley.newRequestQueue(getContext());
 
-    final GsonRequest gsonRequest = new GsonRequest("http://selectunes.eu/api/test",
+    final GsonRequest gsonRequest = new GsonRequest<>("http://selectunes.eu/api/test",
         new TypeToken<List<Incident>>() {}.getType(), null, successIncidentListener(), errorIncidentListener());
     queue.add(gsonRequest);
   }

@@ -16,77 +16,73 @@ import gcarroll.com.irishroadwatchlive.fragments.MyMapFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static final String NATIONAL_SUMMARY = "National Summary";
+  private static final String NATIONAL_SUMMARY = "National Summary";
 
-    private final String LOG_TAG = MyMapFragment.class.getSimpleName();
+  private final String LOG_TAG = MyMapFragment.class.getSimpleName();
 
-    NavigationView navigationView = null;
+  NavigationView navigationView = null;
 
-    Toolbar toolbar = null;
+  Toolbar toolbar = null;
 
-    Fragment fragment;
+  Fragment fragment;
 
-    @Override
-    protected void onCreate(final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+  @Override
+  protected void onCreate(final Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
 
-        if (savedInstanceState == null) {
-            final MyMapFragment mapFragment = new MyMapFragment();
-            changeFragment(mapFragment);
-//            final android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager()
-//                    .beginTransaction();
-//            fragmentTransaction.replace(R.id.fragment_container, mapFragment);
-//            fragmentTransaction.commit();
-        }
-
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        final ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
-                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-        navigationView = (NavigationView) findViewById(R.id.navigation_view);
-        navigationView.setNavigationItemSelectedListener(this);
+    if (savedInstanceState == null) {
+      final MyMapFragment mapFragment = new MyMapFragment();
+      changeFragment(mapFragment);
     }
 
-    @Override
-    public boolean onNavigationItemSelected(final MenuItem item) {
+    toolbar = (Toolbar) findViewById(R.id.toolbar);
+    setSupportActionBar(toolbar);
 
-        final int id = item.getItemId();
+    final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+    final ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+        R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+    drawer.setDrawerListener(toggle);
+    toggle.syncState();
 
-        switch (id) {
-            case R.id.action_main:
-                fragment = new MyMapFragment();
-                changeFragment(fragment);
-                break;
-            case R.id.national_sum:
-                Log.v(LOG_TAG, "National Summary Pressed");
-                break;
-            case R.id.dublin_cam:
-                startIntent(DublinCamActivity.class);
-                break;
-            case R.id.settings:
-                Log.v(LOG_TAG, "Settings Pressed");
-                break;
-        }
+    navigationView = (NavigationView) findViewById(R.id.navigation_view);
+    navigationView.setNavigationItemSelectedListener(this);
+  }
 
-        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
+  @Override
+  public boolean onNavigationItemSelected(final MenuItem item) {
+
+    final int id = item.getItemId();
+
+    switch (id) {
+      case R.id.action_main:
+        fragment = new MyMapFragment();
+        changeFragment(fragment);
+        break;
+      case R.id.national_sum:
+        Log.v(LOG_TAG, "National Summary Pressed");
+        break;
+      case R.id.dublin_cam:
+        startIntent(DublinCamActivity.class);
+        break;
+      case R.id.settings:
+        Log.v(LOG_TAG, "Settings Pressed");
+        break;
     }
 
-    private void startIntent(final Class<?> activityClass) {
-        final Intent intent = new Intent(this, activityClass);
-        startActivity(intent);
-    }
+    final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+    drawer.closeDrawer(GravityCompat.START);
+    return true;
+  }
 
-    private void changeFragment(final Fragment fragment) {
-        final android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment_container, fragment);
-        ft.commit();
-    }
+  private void startIntent(final Class<?> activityClass) {
+    final Intent intent = new Intent(this, activityClass);
+    startActivity(intent);
+  }
+
+  private void changeFragment(final Fragment fragment) {
+    final android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+    ft.replace(R.id.fragment_container, fragment);
+    ft.commit();
+  }
 }
