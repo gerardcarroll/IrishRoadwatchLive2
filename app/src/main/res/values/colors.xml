@@ -9,4 +9,6 @@
     <color name="map_shape_stroke">#000000</color>
 
     <color name="drawer_item_color">#000000</color>
+
+    <color name="tab_Indicator">#FF4081</color>
 </resources>

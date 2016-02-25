@@ -13,28 +13,18 @@ import gcarroll.com.irishroadwatchlive.fragments.TabSouthCityFragment;
  */
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
-  // Store the Titles of the Tabs which are Going to be passed when ViewPagerAdapter is created
-  CharSequence Titles[];
+  private final String LOG_TAG = ViewPagerAdapter.class.getSimpleName();
 
-  // Store the number of tabs, this will also be passed when the ViewPagerAdapter is created
-  int NumbOfTabs;
-
-  // Build a Constructor and assign the passed Values to appropriate values in the class
-  public ViewPagerAdapter(FragmentManager fm, CharSequence mTitles[], int mNumbOfTabs) {
+  public ViewPagerAdapter(final FragmentManager fm) {
     super(fm);
-
-    this.Titles = mTitles;
-    this.NumbOfTabs = mNumbOfTabs;
-
   }
 
-  // This method return the fragment for the every position in the View Pager
   @Override
-  public Fragment getItem(int position) {
+  public Fragment getItem(final int position) {
 
     switch (position) {
       case 0:
-        return new TabMotorwayFragment();
+        return new TabMotorwayFragment(null);
       case 1:
         return new TabNorthCityFragment();
       default:
@@ -42,16 +32,8 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     }
   }
 
-  // This method return the titles for the Tabs in the Tab Strip
-  @Override
-  public CharSequence getPageTitle(int position) {
-    return Titles[position];
-  }
-
-  // This method return the Number of tabs for the tabs Strip
   @Override
   public int getCount() {
-    return NumbOfTabs;
+    return 3; // As there are only 3 Tabs
   }
-
 }

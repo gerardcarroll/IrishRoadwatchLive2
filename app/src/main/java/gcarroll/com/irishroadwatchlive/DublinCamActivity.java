@@ -6,79 +6,88 @@ import java.util.List;
 import java.util.Map;
 
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.Volley;
 import com.google.gson.reflect.TypeToken;
 
 import gcarroll.com.irishroadwatchlive.adapters.ViewPagerAdapter;
+import gcarroll.com.irishroadwatchlive.fragments.TabMotorwayFragment;
 import gcarroll.com.irishroadwatchlive.models.DublinCamera;
 import gcarroll.com.irishroadwatchlive.requests.GsonRequest;
-import gcarroll.com.irishroadwatchlive.sliding_tab_layout.SlidingTabLayout;
+import gcarroll.com.irishroadwatchlive.requests.MyRequestQueue;
 
 public class DublinCamActivity extends AppCompatActivity {
 
   private final String LOG_TAG = DublinCamActivity.class.getSimpleName();
 
-  ViewPager pager;
+  private Toolbar toolbar = null;
 
-  ViewPagerAdapter adapter;
+  private TabLayout tabLayout;
 
-  SlidingTabLayout tabs;
+  private ViewPager viewPager;
 
-  CharSequence Titles[] = { "Motorway", "North City", "South City" };
-
-  int NumbOfTabs = 3;
-
-  Toolbar toolbar = null;
+  private ViewPagerAdapter viewPagerAdapter;
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_dublin_cam);
 
+    // Assigning view variables to their respective view in xml by findViewByID method
     toolbar = (Toolbar) findViewById(R.id.dub_cam_toolbar);
+    tabLayout = (TabLayout) findViewById(R.id.tabs);
+    viewPager = (ViewPager) findViewById(R.id.viewpager);
+
+    // Creating Adapter and setting that adapter to the setSupportActionBar method takes the toolbar and sets it as the
+    // default action bar thus making the toolbar work like a normal action bar.
+    viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+    viewPager.setAdapter(viewPagerAdapter);
     setSupportActionBar(toolbar);
+    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-    // Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
-    adapter = new ViewPagerAdapter(getSupportFragmentManager(), Titles, NumbOfTabs);
+    // TabLayout.newTab() method creates a tab view, a Tab view is not the view which is below the tabs, its the tab
+    // itself.
+    final TabLayout.Tab motorwayTab = tabLayout.newTab();
+    motorwayTab.setText("Motorway");
+    final TabLayout.Tab northCityTab = tabLayout.newTab();
+    northCityTab.setText("North City");
+    final TabLayout.Tab southCityTab = tabLayout.newTab();
+    southCityTab.setText("South City");
 
-    // Assigning ViewPager View and setting the adapter
-    pager = (ViewPager) findViewById(R.id.viewpager);
-    pager.setAdapter(adapter);
+    // Adding the tab view to our tablayout at appropriate positions. As I want home at first position I am passing home
+    // and 0 as argument to the tablayout and like wise for other tabs as well
+    tabLayout.addTab(motorwayTab, 0);
+    tabLayout.addTab(northCityTab, 1);
+    tabLayout.addTab(southCityTab, 2);
 
-    // Assiging the Sliding Tab Layout View
-    tabs = (SlidingTabLayout) findViewById(R.id.tabs);
-    tabs.setDistributeEvenly(true); // To make the Tabs Fixed set this true, This makes the tabs Space Evenly in
-    // Available width
+    // TabTextColor sets the color for the title of the tabs, passing a ColorStateList here makes tab change colors in
+    // different situations such as selected, active, inactive etc TabIndicatorColor sets the color for the
+    // indicator below the tabs
+    tabLayout.setTabTextColors(ContextCompat.getColorStateList(this, R.color.tab_selector));
+    tabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(this, R.color.tab_Indicator));
 
-    // Setting Custom Color for the Scroll bar indicator of the Tab View
-    tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
-      @Override
-      public int getIndicatorColor(int position) {
-        return ContextCompat.getColor(getApplicationContext(), R.color.colorAccent);
-      }
-    });
+    // Adding an onPageChangeListener to the viewPager.
+    // First we add the PageChangeListener and pass a TabLayoutPageChangeListener so that Tabs Selection
+    // changes when a viewpager page changes.
+    viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
-    // Setting the ViewPager For the SlidingTabsLayout
-    tabs.setViewPager(pager);
+    tabLayout.setOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager));
 
     downloadCamInfo();
   }
 
   private void downloadCamInfo() {
-    final RequestQueue queue = Volley.newRequestQueue(this);
-
     final GsonRequest gsonRequest = new GsonRequest("http://selectunes.eu/api/trafficcam",
         new TypeToken<List<DublinCamera>>() {}.getType(), null, successDubCamListener(), errorDubCamListener());
-    queue.add(gsonRequest);
+
+    MyRequestQueue.getInstance(this).addToRequestQueue(gsonRequest);
   }
 
   private Response.Listener successDubCamListener() {
@@ -94,11 +103,15 @@ public class DublinCamActivity extends AppCompatActivity {
           }
           map.get(key).add(cam);
         }
+        final List<DublinCamera> motorwayCams = map.get("Motorway");
+        final List<DublinCamera> northCams = map.get("North City");
+        final List<DublinCamera> southCams = map.get("South City");
 
-        final List<DublinCamera> motorWayCams = map.get("Motorway");
+        Log.v(LOG_TAG, "Camera Junction: " + motorwayCams.get(0).getJunction());
+        Log.v(LOG_TAG, "Camera Junction: " + northCams.get(0).getJunction());
+        Log.v(LOG_TAG, "Camera Junction: " + southCams.get(0).getJunction());
 
-        Log.v(LOG_TAG, "Camera Junction: " + motorWayCams.get(0).getJunction());
-
+        new TabMotorwayFragment(motorwayCams);
       }
     };
   }

@@ -26,6 +26,7 @@ import gcarroll.com.irishroadwatchlive.R;
 import gcarroll.com.irishroadwatchlive.adapters.MapPopupAdapter;
 import gcarroll.com.irishroadwatchlive.models.Incident;
 import gcarroll.com.irishroadwatchlive.requests.GsonRequest;
+import gcarroll.com.irishroadwatchlive.requests.MyRequestQueue;
 
 /**
  * A simple {@link Fragment} subclass. Activities that contain this fragment must implement the {!-@link
@@ -100,7 +101,8 @@ public class MyMapFragment extends Fragment implements OnMapReadyCallback {
 
     final GsonRequest gsonRequest = new GsonRequest<>("http://selectunes.eu/api/test",
         new TypeToken<List<Incident>>() {}.getType(), null, successIncidentListener(), errorIncidentListener());
-    queue.add(gsonRequest);
+
+    MyRequestQueue.getInstance(getContext()).addToRequestQueue(gsonRequest);
   }
 
   private Response.Listener successIncidentListener() {

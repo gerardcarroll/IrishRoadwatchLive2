@@ -27,13 +27,6 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
 
         <!-- Google Maps Fragment API Key Data "AIzaSyDfFApi_JGyojVCE12SdWNOCkNHjtFhoIU  AIzaSyCb-qgpyDYoMk6VppNVntpekN5icUv7M_c" -->
         <meta-data
@@ -43,7 +36,19 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version"/>
 
-        <activity android:name=".DublinCamActivity">
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".DublinCamActivity"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name=".PARENT_ACTIVITY"
+                android:value=".MainActivity"/>
         </activity>
     </application>
 
