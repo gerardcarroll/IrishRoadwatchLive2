@@ -1,12 +1,15 @@
 package gcarroll.com.irishroadwatchlive.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by gcarroll on 23/02/2016.
  */
-public class DublinCamera {
+public class DublinCamera implements Parcelable {
 
   @SerializedName("Id")
   @Expose
@@ -27,6 +30,16 @@ public class DublinCamera {
   @SerializedName("Fav")
   @Expose
   private Boolean Fav;
+
+  public DublinCamera() {}
+
+  public DublinCamera(Parcel in) {
+    Id = in.readInt();
+    Area = in.readString();
+    Junction = in.readString();
+    Url = in.readString();
+    Fav = in.readByte() != 0; // Fav == true if byte != 0
+  }
 
   /**
    * @return The Id
@@ -97,4 +110,36 @@ public class DublinCamera {
   public void setFav(final Boolean Fav) {
     this.Fav = Fav;
   }
+
+  @Override
+  public String toString() {
+    return Id + "\n" + Junction;
+  }
+
+  @Override
+  public int describeContents() {
+    return 0;
+  }
+
+  @Override
+  public void writeToParcel(Parcel dest, int flags) {
+    dest.writeInt(Id);
+    dest.writeString(Area);
+    dest.writeString(Junction);
+    dest.writeString(Url);
+    dest.writeByte((byte) (Fav
+        ? 1
+        : 0));
+  }
+
+  @SuppressWarnings("rawtypes")
+  public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+    public DublinCamera createFromParcel(Parcel in) {
+      return new DublinCamera(in);
+    }
+
+    public DublinCamera[] newArray(int size) {
+      return new DublinCamera[size];
+    }
+  };
 }

@@ -13,8 +13,6 @@ import gcarroll.com.irishroadwatchlive.fragments.TabSouthCityFragment;
  */
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
-  private final String LOG_TAG = ViewPagerAdapter.class.getSimpleName();
-
   public ViewPagerAdapter(final FragmentManager fm) {
     super(fm);
   }
@@ -24,7 +22,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
     switch (position) {
       case 0:
-        return new TabMotorwayFragment(null);
+        return new TabMotorwayFragment();
       case 1:
         return new TabNorthCityFragment();
       default:

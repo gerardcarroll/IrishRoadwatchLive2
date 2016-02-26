@@ -95,7 +95,7 @@ public class DublinCamActivity extends AppCompatActivity {
       @Override
       public void onResponse(final List<DublinCamera> cameras) {
         // Do something with response
-        final Map<String, List<DublinCamera>> map = new HashMap<>();
+        final Map<String, ArrayList<DublinCamera>> map = new HashMap<>();
         for (final DublinCamera cam : cameras) {
           final String key = cam.getArea();
           if (map.get(key) == null) {
@@ -103,15 +103,15 @@ public class DublinCamActivity extends AppCompatActivity {
           }
           map.get(key).add(cam);
         }
-        final List<DublinCamera> motorwayCams = map.get("Motorway");
-        final List<DublinCamera> northCams = map.get("North City");
-        final List<DublinCamera> southCams = map.get("South City");
+        final ArrayList<DublinCamera> motorwayCams = map.get("Motorway");
+        final ArrayList<DublinCamera> northCams = map.get("North City");
+        final ArrayList<DublinCamera> southCams = map.get("South City");
 
         Log.v(LOG_TAG, "Camera Junction: " + motorwayCams.get(0).getJunction());
         Log.v(LOG_TAG, "Camera Junction: " + northCams.get(0).getJunction());
         Log.v(LOG_TAG, "Camera Junction: " + southCams.get(0).getJunction());
 
-        new TabMotorwayFragment(motorwayCams);
+        TabMotorwayFragment.getInstance(motorwayCams);
       }
     };
   }
