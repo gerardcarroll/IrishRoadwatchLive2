@@ -13,12 +13,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.google.gson.reflect.TypeToken;
 
 import gcarroll.com.irishroadwatchlive.adapters.ViewPagerAdapter;
-import gcarroll.com.irishroadwatchlive.fragments.TabMotorwayFragment;
 import gcarroll.com.irishroadwatchlive.models.DublinCamera;
 import gcarroll.com.irishroadwatchlive.requests.GsonRequest;
 import gcarroll.com.irishroadwatchlive.requests.MyRequestQueue;
@@ -27,11 +29,14 @@ public class DublinCamActivity extends AppCompatActivity {
 
   private final String LOG_TAG = DublinCamActivity.class.getSimpleName();
 
-  private Toolbar toolbar = null;
+  @Bind(R.id.dub_cam_toolbar)
+  Toolbar toolbar;
 
-  private TabLayout tabLayout;
+  @Bind(R.id.tabs)
+  TabLayout tabLayout;
 
-  private ViewPager viewPager;
+  @Bind(R.id.viewpager)
+  ViewPager viewPager;
 
   private ViewPagerAdapter viewPagerAdapter;
 
@@ -40,10 +45,7 @@ public class DublinCamActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_dublin_cam);
 
-    // Assigning view variables to their respective view in xml by findViewByID method
-    toolbar = (Toolbar) findViewById(R.id.dub_cam_toolbar);
-    tabLayout = (TabLayout) findViewById(R.id.tabs);
-    viewPager = (ViewPager) findViewById(R.id.viewpager);
+    ButterKnife.bind(this);
 
     // Creating Adapter and setting that adapter to the setSupportActionBar method takes the toolbar and sets it as the
     // default action bar thus making the toolbar work like a normal action bar.
@@ -110,8 +112,6 @@ public class DublinCamActivity extends AppCompatActivity {
         Log.v(LOG_TAG, "Camera Junction: " + motorwayCams.get(0).getJunction());
         Log.v(LOG_TAG, "Camera Junction: " + northCams.get(0).getJunction());
         Log.v(LOG_TAG, "Camera Junction: " + southCams.get(0).getJunction());
-
-        TabMotorwayFragment.getInstance(motorwayCams);
       }
     };
   }

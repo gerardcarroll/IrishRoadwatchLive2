@@ -69,7 +69,7 @@ public class GsonRequest<T> extends Request<T> {
       return Response.error(new ParseError(e));
     }
     catch (final JsonSyntaxException e) {
-      Log.v(LOG_TAG, "Returning Response error: " + e.toString());
+      Log.v(LOG_TAG, "Returning Response error: " + e.getMessage());
       return Response.error(new ParseError(e));
     }
   }

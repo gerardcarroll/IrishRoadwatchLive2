@@ -12,40 +12,45 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import gcarroll.com.irishroadwatchlive.fragments.MyMapFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-  private static final String NATIONAL_SUMMARY = "National Summary";
-
   private final String LOG_TAG = MyMapFragment.class.getSimpleName();
 
-  NavigationView navigationView = null;
+  // Fragment fragment;
 
-  Toolbar toolbar = null;
+  @Bind(R.id.navigation_view)
+  NavigationView navigationView;
 
-  Fragment fragment;
+  @Bind(R.id.drawer_layout)
+  DrawerLayout drawerLayout;
+
+  @Bind(R.id.toolbar)
+  Toolbar toolbar;
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
+    ButterKnife.bind(this);
+
     if (savedInstanceState == null) {
       final MyMapFragment mapFragment = new MyMapFragment();
       changeFragment(mapFragment);
     }
 
-    toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
 
-    final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-    final ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+    // final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+    final ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
         R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-    drawer.setDrawerListener(toggle);
+    drawerLayout.setDrawerListener(toggle);
     toggle.syncState();
 
-    navigationView = (NavigationView) findViewById(R.id.navigation_view);
     navigationView.setNavigationItemSelectedListener(this);
   }
 
@@ -55,10 +60,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     final int id = item.getItemId();
 
     switch (id) {
-      case R.id.action_main:
-        fragment = new MyMapFragment();
-        changeFragment(fragment);
-        break;
+      // case R.id.action_main:
+      // fragment = new MyMapFragment();
+      // changeFragment(fragment);
+      // break;
       case R.id.national_sum:
         Log.v(LOG_TAG, "National Summary Pressed");
         break;
@@ -70,8 +75,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         break;
     }
 
-    final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-    drawer.closeDrawer(GravityCompat.START);
+    drawerLayout.closeDrawer(GravityCompat.START);
     return true;
   }
 

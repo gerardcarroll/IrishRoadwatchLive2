@@ -9,10 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.android.volley.RequestQueue;
+import butterknife.ButterKnife;
+
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -34,8 +34,6 @@ import gcarroll.com.irishroadwatchlive.requests.MyRequestQueue;
  * MyMapFragment#newInstance} factory method to create an instance of this fragment.
  */
 public class MyMapFragment extends Fragment implements OnMapReadyCallback {
-
-  private static View view;
 
   private final String LOG_TAG = MyMapFragment.class.getSimpleName();
 
@@ -61,11 +59,15 @@ public class MyMapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     // Get the view
-    view = inflater.inflate(R.layout.fragment_map, container, false);
+    View view = inflater.inflate(R.layout.fragment_map, container, false);
 
+    ButterKnife.bind(this, view);
     // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-    final SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.my_map);
-    mapFragment.getMapAsync(this);
+    final SupportMapFragment myMapFragment = (SupportMapFragment) getChildFragmentManager()
+        .findFragmentById(R.id.my_map);
+
+    // Get notified when the map is ready to be used.
+    myMapFragment.getMapAsync(this);
 
     // Inflate the layout for this fragment
     return view;
@@ -96,8 +98,6 @@ public class MyMapFragment extends Fragment implements OnMapReadyCallback {
     mMap.addMarker(new MarkerOptions().position(new LatLng(54.266077, -8.453736)).title("You are here!"));
 
     mMap.setInfoWindowAdapter(new MapPopupAdapter(getActivity().getLayoutInflater()));
-
-    final RequestQueue queue = Volley.newRequestQueue(getContext());
 
     final GsonRequest gsonRequest = new GsonRequest<>("http://selectunes.eu/api/test",
         new TypeToken<List<Incident>>() {}.getType(), null, successIncidentListener(), errorIncidentListener());
@@ -132,6 +132,12 @@ public class MyMapFragment extends Fragment implements OnMapReadyCallback {
     mMap.addMarker(new MarkerOptions().anchor(0, 1).title(incident.getTitle()).snippet(incident.getDate())
         .icon(incident.getMapIcon()).position(new LatLng(incident.getLatitude(), incident.getLongitude()))
         .title(incident.getReport()));
+  }
+
+  @Override
+  public void onDestroyView() {
+    super.onDestroyView();
+    ButterKnife.unbind(this);
   }
 
   // @Override

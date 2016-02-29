@@ -17,6 +17,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    lintOptions {
+        disable 'InvalidPackage'
+    }
 }
 
 dependencies {
@@ -29,4 +33,5 @@ dependencies {
     compile 'com.google.code.gson:gson:2.5'
     compile 'com.mcxiaoke.volley:library:1.0.19'
     compile 'com.google.maps.android:android-maps-utils:0.4.1'
+    compile 'com.jakewharton:butterknife:7.0.1'
 }
